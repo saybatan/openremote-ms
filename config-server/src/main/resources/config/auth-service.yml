@@ -4,3 +4,17 @@ server:
 spring:
   application:
     name: auth-service
+  cloud:
+    config:
+      enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+openremote:
+  login:
+    url: https://157.90.237.124:8443/auth/realms/mytenant/protocol/openid-connect/token
+  username: myUser
+  password: KQRiw2qEBNtFnquZ9rraTe4i0j7rtTmT
