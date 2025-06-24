@@ -1,6 +1,7 @@
 package com.saybatan.assetservice.service;
 
 import com.saybatan.assetservice.dto.AssetDto;
+import com.saybatan.assetservice.dto.AssetUpdateDto;
 import com.saybatan.assetservice.utils.Base62UuidGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +46,6 @@ public class AssetService {
     public ResponseEntity<String> createAsset(AssetDto assetDto) {
         String token = authClient.getToken();
 
-        // Otomatik alanlar
         String generatedId = Base62UuidGenerator.generateBase62Uuid();
         long createdOn = System.currentTimeMillis();
 
@@ -67,6 +67,39 @@ public class AssetService {
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(fullPayload, headers);
 
         return restTemplate.postForEntity(assetUrl, request, String.class);
+    }
+
+    public void updateAsset(String assetId, AssetUpdateDto assetUpdateDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(authClient.getToken());
+
+        HttpEntity<Void> getRequest = new HttpEntity<>(headers);
+        String getUrl = assetUrl + "/" + assetId;
+
+        ResponseEntity<Map> response = restTemplate.exchange(getUrl, HttpMethod.GET, getRequest, Map.class);
+        Map<String, Object> existingAsset = response.getBody();
+
+        if (existingAsset == null) {
+            throw new RuntimeException("Asset not found with id: " + assetId);
+        }
+
+        if (assetUpdateDto.getName() != null) {
+            existingAsset.put("name", assetUpdateDto.getName());
+        }
+
+        if (assetUpdateDto.getAccessPublicRead() != null) {
+            existingAsset.put("accessPublicRead", assetUpdateDto.getAccessPublicRead());
+        }
+
+        if (assetUpdateDto.getAttributes() != null) {
+            existingAsset.put("attributes", assetUpdateDto.getAttributes());
+        }
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> putRequest = new HttpEntity<>(existingAsset, headers);
+        String putUrl = assetUrl + "/" + assetId;
+
+        restTemplate.exchange(putUrl, HttpMethod.PUT, putRequest, Void.class);
     }
 
 }
