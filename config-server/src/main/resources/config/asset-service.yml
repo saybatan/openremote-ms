@@ -4,3 +4,7 @@ server:
 spring:
   application:
     name: asset-service
+
+openremote:
+  asset-url: https://157.90.237.124:8443/api/mytenant/asset
+  auth-url: http://localhost:8081/api/auth/token
