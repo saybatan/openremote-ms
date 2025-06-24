@@ -12,6 +12,7 @@
     <groupId>com.saybatan</groupId>
     <artifactId>openremote-ms</artifactId>
     <version>1.0.0</version>
+    <packaging>pom</packaging>
 
     <name>openremote-ms</name>
     <description>Openremote microservice project</description>
@@ -22,7 +23,7 @@
     </properties>
 
     <modules>
-
+        <module>config-server</module>
     </modules>
 
     <dependencyManagement>
