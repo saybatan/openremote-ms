@@ -5,6 +5,11 @@ spring:
   application:
     name: asset-service
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
 openremote:
   asset-url: https://157.90.237.124:8443/api/mytenant/asset
   auth-url: http://localhost:8081/api/auth/token
