@@ -31,4 +31,10 @@ public class AssetController {
         assetService.updateAsset(id, assetUpdateDto);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{assetId}")
+    public ResponseEntity<Void> deleteAsset(@PathVariable String assetId) {
+        assetService.deleteAsset(assetId);
+        return ResponseEntity.noContent().build();
+    }
 }

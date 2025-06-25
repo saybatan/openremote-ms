@@ -46,10 +46,7 @@ public class AssetService {
     public ResponseEntity<String> createAsset(AssetDto assetDto) {
         String token = authClient.getToken();
 
-        String generatedId = Base62UuidGenerator.generateBase62Uuid();
-        long createdOn = System.currentTimeMillis();
-
-        Map<String, Object> fullPayload = getStringObjectMap(assetDto, generatedId, createdOn);
+        Map<String, Object> fullPayload = getStringObjectMap(assetDto);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -60,8 +57,10 @@ public class AssetService {
         return restTemplate.postForEntity(assetUrl, request, String.class);
     }
 
-    private static Map<String, Object> getStringObjectMap(AssetDto assetDto, String generatedId, long createdOn) {
+    private static Map<String, Object> getStringObjectMap(AssetDto assetDto) {
         Map<String, Object> fullPayload = new HashMap<>();
+        String generatedId = Base62UuidGenerator.generateBase62Uuid();
+        long createdOn = System.currentTimeMillis();
         fullPayload.put("id", generatedId);
         fullPayload.put("version", 0);
         fullPayload.put("createdOn", createdOn);
@@ -109,6 +108,18 @@ public class AssetService {
         if (assetUpdateDto.getAttributes() != null) {
             existingAsset.put("attributes", assetUpdateDto.getAttributes());
         }
+    }
+
+    public void deleteAsset(String assetId) {
+        String accessToken = authClient.getToken();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        String deleteUrl = assetUrl + "?assetId=" + assetId;
+        restTemplate.exchange(deleteUrl, HttpMethod.DELETE, request, Void.class);
     }
 
 }
