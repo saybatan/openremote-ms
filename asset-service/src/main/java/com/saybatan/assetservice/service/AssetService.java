@@ -49,6 +49,18 @@ public class AssetService {
         String generatedId = Base62UuidGenerator.generateBase62Uuid();
         long createdOn = System.currentTimeMillis();
 
+        Map<String, Object> fullPayload = getStringObjectMap(assetDto, generatedId, createdOn);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
+
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(fullPayload, headers);
+
+        return restTemplate.postForEntity(assetUrl, request, String.class);
+    }
+
+    private static Map<String, Object> getStringObjectMap(AssetDto assetDto, String generatedId, long createdOn) {
         Map<String, Object> fullPayload = new HashMap<>();
         fullPayload.put("id", generatedId);
         fullPayload.put("version", 0);
@@ -59,14 +71,7 @@ public class AssetService {
         fullPayload.put("type", assetDto.getType());
         fullPayload.put("path", List.of(generatedId));
         fullPayload.put("attributes", assetDto.getAttributes() != null ? assetDto.getAttributes() : new HashMap<>());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(token);
-
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(fullPayload, headers);
-
-        return restTemplate.postForEntity(assetUrl, request, String.class);
+        return fullPayload;
     }
 
     public void updateAsset(String assetId, AssetUpdateDto assetUpdateDto) {
@@ -83,7 +88,17 @@ public class AssetService {
             throw new RuntimeException("Asset not found with id: " + assetId);
         }
 
-        if (assetUpdateDto.getName() != null) {
+        updateFields(assetUpdateDto, existingAsset);
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> putRequest = new HttpEntity<>(existingAsset, headers);
+        String putUrl = assetUrl + "/" + assetId;
+
+        restTemplate.exchange(putUrl, HttpMethod.PUT, putRequest, Void.class);
+    }
+
+    private static void updateFields(AssetUpdateDto assetUpdateDto, Map<String, Object> existingAsset) {
+        if (assetUpdateDto.getName() != null && !assetUpdateDto.getName().isEmpty()) {
             existingAsset.put("name", assetUpdateDto.getName());
         }
 
@@ -94,12 +109,6 @@ public class AssetService {
         if (assetUpdateDto.getAttributes() != null) {
             existingAsset.put("attributes", assetUpdateDto.getAttributes());
         }
-
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Map<String, Object>> putRequest = new HttpEntity<>(existingAsset, headers);
-        String putUrl = assetUrl + "/" + assetId;
-
-        restTemplate.exchange(putUrl, HttpMethod.PUT, putRequest, Void.class);
     }
 
 }
