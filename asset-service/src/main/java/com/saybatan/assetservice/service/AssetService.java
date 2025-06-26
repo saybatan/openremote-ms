@@ -3,7 +3,9 @@ package com.saybatan.assetservice.service;
 import com.saybatan.assetservice.dto.AssetDto;
 import com.saybatan.assetservice.dto.AssetUpdateDto;
 import com.saybatan.assetservice.utils.Base62UuidGenerator;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class AssetService {
     private final RestTemplate restTemplate;
     private final AuthClient authClient;
 
+    @Setter
     @Value("${openremote.asset-url}")
     private String assetUrl;
 
