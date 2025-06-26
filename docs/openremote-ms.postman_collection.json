@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "6a39f8ea-ea2d-4004-8049-23f5413012d1",
+		"name": "openremote-ms",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13311128"
+	},
+	"item": [
+		{
+			"name": "get-token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/auth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-asset",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"door9\",\r\n    \"accessPublicRead\": false,\r\n    \"realm\": \"mytenant\",\r\n    \"type\": \"DoorAsset\",\r\n    \"attributes\": {\r\n        \"notes\": {\r\n        },\r\n        \"location\": {\r\n        },\r\n        \"position\": {\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/assets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"assets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-asset",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accessPublicRead\": false,\r\n    \"attributes\": {\r\n        \"notes\": {\r\n            \"Text\":\"test\"\r\n        },\r\n        \"location\": {\r\n        },\r\n        \"position\": {\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/assets/2qDUi5Zut45ANfZkETsSmh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"assets",
+						"2qDUi5Zut45ANfZkETsSmh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-asset",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/assets/2qDUi5Zut45ANfZkETsByk",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"assets",
+						"2qDUi5Zut45ANfZkETsByk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-asset",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/assets/jaXtGt9pT0Se4kBk2A2e9Q",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"assets",
+						"jaXtGt9pT0Se4kBk2A2e9Q"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
